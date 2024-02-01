@@ -15,7 +15,6 @@ class PeerService {
   }
 
   async getAnswer(offer) {
-    console.log(offer);
     if (this.peer) {
       await this.peer.setRemoteDescription(offer);
       const ans = await this.peer.createAnswer();

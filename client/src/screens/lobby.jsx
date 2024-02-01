@@ -4,11 +4,9 @@ import { useSocket } from "../context/SocketProvider";
 
 const LobbyScreen = () => {
   const [email, setEmail] = useState("");
-
   const [room, setRoom] = useState("");
 
   const socket = useSocket();
-
   const navigate = useNavigate();
 
   const handleSubmitForm = useCallback(
@@ -19,7 +17,7 @@ const LobbyScreen = () => {
     [email, room, socket]
   );
 
-  const handleRoomJoin = useCallback(
+  const handleJoinRoom = useCallback(
     (data) => {
       const { email, room } = data;
       navigate(`/room/${room}`);
@@ -28,17 +26,17 @@ const LobbyScreen = () => {
   );
 
   useEffect(() => {
-    socket.on("room:join", handleRoomJoin);
+    socket.on("room:join", handleJoinRoom);
     return () => {
-      socket.off("room:join", handleRoomJoin);
+      socket.off("room:join", handleJoinRoom);
     };
-  }, [socket]);
+  }, [socket, handleJoinRoom]);
 
   return (
     <div>
-      <h1>LobbyScreen</h1>
+      <h1>Lobby</h1>
       <form onSubmit={handleSubmitForm}>
-        <label htmlFor="email">Email ID: </label>
+        <label htmlFor="email">Email ID</label>
         <input
           type="email"
           id="email"
@@ -46,9 +44,9 @@ const LobbyScreen = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <br />
-        <label htmlFor="room">Room ID: </label>
+        <label htmlFor="room">Room Number</label>
         <input
-          type="room"
+          type="text"
           id="room"
           value={room}
           onChange={(e) => setRoom(e.target.value)}
